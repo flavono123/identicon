@@ -1,11 +1,21 @@
 import hashlib
 import unittest
+import string
+import random
+import io
+
+from PIL import Image
 
 import Identicon
 
 
 class IdenticonTestCase(unittest.TestCase):
 
+    # Helpers
+    def random_code(self, n):
+        return ''.join(random.choices(string.printable, k=n))
+
+    # Tests
     def test_to_hash_hex_list_return_32bytes(self):
         self.assertEqual(len(Identicon._to_hash_hex_list('some_code')), 32)
         self.assertEqual(len(Identicon._to_hash_hex_list('other_code')), 32)
@@ -47,6 +57,15 @@ class IdenticonTestCase(unittest.TestCase):
                              [5,6,5]]
 
         self.assertEqual(Identicon._mirror_row(half_grid_3x3), expected_grid_3x3)
+
+    def test_background_color_of_returned_identicon_is_correct(self):
+       identicon = Identicon.render(self.random_code(10))
+       image = Image.open(io.BytesIO(identicon))
+       rgb_image = image.convert('RGB')
+       background_color = rgb_image.getpixel((19,19))
+
+       self.assertEqual(Identicon.BACKGROUND_COLOR, background_color)
+
 
 
 if __name__ == '__main__':
