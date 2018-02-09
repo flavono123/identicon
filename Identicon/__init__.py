@@ -38,8 +38,8 @@ def _set_pixels(flatten_grid):
     # Caculate pixels
     pixels = []
     for i, val in enumerate(flatten_grid):
-        x = int(i%5 * 50)
-        y = int(i//5 * 50)
+        x = int(i%5 * 50) + 20
+        y = int(i//5 * 50) + 20
         
         top_left = (x, y)
         bottom_right = (x + 50, y + 50)
@@ -78,7 +78,7 @@ def _flat_to_list(nested_list):
     return flatten_list
 
 def _draw_identicon(color, grid_list, pixels):
-    identicon_im = Image.new('RGB', (250, 250), BACKGROUND_COLOR)
+    identicon_im = Image.new('RGB', (50*5+20*2, 50*5+20*2), BACKGROUND_COLOR)
     draw = ImageDraw.Draw(identicon_im)
     for grid, pixel in zip(grid_list, pixels):
         if grid != 0: # for not zero
