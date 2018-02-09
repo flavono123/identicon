@@ -15,6 +15,8 @@ A Python library for generating GitHub-like symmetrical 5x5 `identicons <https:/
 Installation
 ------------
 
+**Sorry, not yet available.**
+
 ::
 
     pip install Identicon
