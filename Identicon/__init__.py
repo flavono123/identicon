@@ -5,7 +5,7 @@ import io
 import hashlib
 from PIL import Image, ImageDraw
 
-BACKGROUND_COLOR = '#f4f4f4'
+BACKGROUND_COLOR = (244, 244, 244)
 
 def render(code):
     hex_list = _to_hash_hex_list(code)
@@ -84,5 +84,25 @@ def _draw_identicon(color, grid_list, pixels):
         if grid != 0: # for not zero
             draw.rectangle(pixel, fill=color)
 
+    identicon_im = _crop_coner_round(identicon_im, 50)
+
     return identicon_im
 
+def _crop_coner_round(im, rad):
+    round_edge = Image.new('L', (rad*2, rad*2), 0)
+
+    draw = ImageDraw.Draw(round_edge)
+    draw.ellipse((0, 0, rad*2, rad*2), fill='white')
+
+    alpha = Image.new('L', im.size, 255)
+
+    w, h = im.size
+
+    alpha.paste(round_edge.crop((0, 0, rad, rad)), (0, 0))
+    alpha.paste(round_edge.crop((0, rad, rad, rad * 2)), (0, h - rad))
+    alpha.paste(round_edge.crop((rad, 0, rad*2, rad)), (w - rad, 0))
+    alpha.paste(round_edge.crop((rad, rad, rad*2, rad*2)), (w - rad, h - rad))
+
+    im.putalpha(alpha)
+
+    return im
