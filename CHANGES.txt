@@ -1,3 +1,7 @@
+0.1.1
+-----
+- Crop edges of image as rounded corner
+
 0.1
 -----
 - Render for 5x5 size
