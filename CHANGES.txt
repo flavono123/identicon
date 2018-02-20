@@ -1,3 +1,10 @@
+0.1.1
+-----
+
+- Crop edges of image as rounded corner
+- Publish to PyPI
+
 0.1
 -----
+
 - Render for 5x5 size
