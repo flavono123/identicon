@@ -1,3 +1,12 @@
+0.2.0
+-----
+- Added parameter for image size
+- Added parameter for padding
+- Added parameter for background color
+- Added parameter for foreground color
+- Added parameter for corner radius
+- Allowed dyanmic background color and static foreground color
+
 0.1.1
 -----
 

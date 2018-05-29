@@ -29,7 +29,7 @@ class IdenticonTestCase(unittest.TestCase):
         #dummy_hex_list = str(0x0123456789abcdef) 
         dummy_hex_list = hashlib.md5('dummy'.encode('utf8')).hexdigest()
         
-        grid = Identicon._build_grid(dummy_hex_list)
+        grid = Identicon._build_grid(dummy_hex_list, 5)
 
         self.assertEqual(len(grid), 5)
         for i in range(5):
@@ -64,7 +64,7 @@ class IdenticonTestCase(unittest.TestCase):
        rgb_image = image.convert('RGB')
        background_color = rgb_image.getpixel((19,19))
 
-       self.assertEqual(Identicon.BACKGROUND_COLOR, background_color)
+       self.assertEqual(Identicon.DEFAULT_BACKGROUND_COLOR, background_color)
 
 
 
