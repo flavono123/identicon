@@ -55,7 +55,7 @@ def _build_grid(hex_list, number_of_blocks):
     hex_list_tail = hex_list[2:]
     
     # Make 3x5 gird, half of the symmetric grid(left side)
-    half_number_of_blocks = math.ceil(number_of_blocks/2)
+    half_number_of_blocks = int(math.ceil(number_of_blocks/2.0))
     hex_half_grid = [[hex_list_tail[col:col+2] for col in range(row, row+2*half_number_of_blocks, 2)]
             for row in range(0, 2*half_number_of_blocks*number_of_blocks, 2*half_number_of_blocks)]
 
