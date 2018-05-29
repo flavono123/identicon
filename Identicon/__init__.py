@@ -48,7 +48,7 @@ def _extract_color(hex_list):
     r,g,b =tuple(hex_list[i:i+2] 
             for i in range(0, 2*3, 2))
 
-    return f'#{r}{g}{b}'
+    return '#{r}{g}{b}'.format(r=r,g=g,b=b)
 
 def _build_grid(hex_list, number_of_blocks):
     # Tailing hex_list to rear 15 bytes
