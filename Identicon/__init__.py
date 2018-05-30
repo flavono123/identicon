@@ -48,19 +48,19 @@ def _to_hash_hex_str(input_str):
 
     return hash.hexdigest()
 
-def _extract_color(hex_list, lightness, saturation):
-    hue = (int(hex_list[-7:], 16) / float(0xfffffff))
+def _extract_color(hex_str, lightness, saturation):
+    hue = (int(hex_str[-7:], 16) / float(0xfffffff))
 
     r,g,b = (int(v*255) for v in colorsys.hls_to_rgb(hue, lightness, saturation))
     return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
-def _build_grid(hex_list, number_of_blocks):
-    # Tailing hex_list to rear 15 bytes
-    hex_list_tail = hex_list[2:]
+def _build_grid(hex_str, number_of_blocks):
+    # Tailing hex_str to rear 15 bytes
+    hex_str_tail = hex_str[2:]
     
     # Make 3x5 gird, half of the symmetric grid(left side)
     half_number_of_blocks = int(math.ceil(number_of_blocks/2.0))
-    hex_half_grid = [[hex_list_tail[col:col+2] for col in range(row, row+2*half_number_of_blocks, 2)]
+    hex_half_grid = [[hex_str_tail[col:col+2] for col in range(row, row+2*half_number_of_blocks, 2)]
             for row in range(0, 2*half_number_of_blocks*number_of_blocks, 2*half_number_of_blocks)]
 
     hex_grid = _mirror_row(hex_half_grid)
