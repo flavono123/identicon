@@ -11,12 +11,14 @@ DEFAULT_BACKGROUND_COLOR = (244, 244, 244)
 DEFAULT_PADDING = 20
 DEFAULT_SIZE = 290
 DEFAULT_IMAGE_TYPE = 'PNG'
+DEFAULT_LIGHTNESS = 0.5
+DEFAULT_SATURATION = 0.7
 
-def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
+def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, lightness=DEFAULT_LIGHTNESS, saturation=DEFAULT_SATURATION, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
 
     # Generate colors
     hex_list = _to_hash_hex_list(code)
-    generated_color = _extract_color(hex_list)
+    generated_color = _extract_color(hex_list, lightness, saturation)
     background_color = generated_color if background_color is None else background_color
     foreground_color = generated_color if foreground_color is None else foreground_color
 
@@ -46,7 +48,7 @@ def _to_hash_hex_list(code):
 
     return hash.hexdigest()
 
-def _extract_color(hex_list, saturation=0.7, lightness=0.5):
+def _extract_color(hex_list, lightness, saturation):
     hue = (int(hex_list[-7:], 16) / 0xfffffff)
 
     r,g,b = (int(round(v*255)) for v in colorsys.hls_to_rgb(hue, lightness, saturation))

@@ -6,6 +6,9 @@
 - Added parameter for foreground color
 - Added parameter for corner radius
 - Added parameter for image type
+- Color is now chosen using HLS (The Hue is varied, while lightness and saturation remains constant)
+- Added parameter for lightness
+- Added parameter for saturation
 - Allowed dyanmic background color and static foreground color
 
 0.1.1
