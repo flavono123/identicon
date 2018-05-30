@@ -1,5 +1,6 @@
 0.2.0
 -----
+- Added parameter for input_hash_str (Allows the hash to be calculated via other means other than the default MD5)
 - Added parameter for image size
 - Added parameter for padding
 - Added parameter for background color
