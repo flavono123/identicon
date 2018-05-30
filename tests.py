@@ -23,7 +23,7 @@ class IdenticonTestCase(unittest.TestCase):
     def test_extract_color_return_hex_rgb_string(self):
         hex_list = Identicon._to_hash_hex_list('test_extract_color')
 
-        self.assertRegex(Identicon._extract_color(hex_list), r'^#[0-9a-fA-F]{6}$')
+        self.assertRegex(Identicon._extract_color(hex_list, 0.5, 0.7), r'^#[0-9a-fA-F]{6}$')
 
     def test_build_grid_return_5x5_list(self):
         #dummy_hex_list = str(0x0123456789abcdef) 
