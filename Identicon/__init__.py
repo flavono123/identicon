@@ -9,8 +9,9 @@ from PIL import Image, ImageDraw
 DEFAULT_BACKGROUND_COLOR = (244, 244, 244)
 DEFAULT_PADDING = 20
 DEFAULT_SIZE = 290
+DEFAULT_IMAGE_TYPE = 'PNG'
 
-def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, corner_radius=None):
+def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
 
     # Generate colors
     hex_list = _to_hash_hex_list(code)
@@ -33,7 +34,7 @@ def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DE
 
     # Generate byte array
     identicon_byte_arr = io.BytesIO()
-    identicon_im.save(identicon_byte_arr, format='PNG')
+    identicon_im.save(identicon_byte_arr, format=image_type)
     identicon_byte_arr = identicon_byte_arr.getvalue()
 
     return identicon_byte_arr

@@ -5,6 +5,7 @@
 - Added parameter for background color
 - Added parameter for foreground color
 - Added parameter for corner radius
+- Added parameter for image type
 - Allowed dyanmic background color and static foreground color
 
 0.1.1
