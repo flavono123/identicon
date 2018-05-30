@@ -49,7 +49,7 @@ def _to_hash_hex_str(input_str):
     return hash.hexdigest()
 
 def _extract_color(hex_list, lightness, saturation):
-    hue = (int(hex_list[-7:], 16) / 0xfffffff)
+    hue = (int(hex_list[-7:], 16) / float(0xfffffff))
 
     r,g,b = (int(v*255) for v in colorsys.hls_to_rgb(hue, lightness, saturation))
     return '#{:02x}{:02x}{:02x}'.format(r, g, b)
