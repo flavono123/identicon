@@ -2,8 +2,9 @@
 __version__='0.2.0'
 
 import io
-import hashlib
 import math
+import hashlib
+import colorsys
 from PIL import Image, ImageDraw
 
 DEFAULT_BACKGROUND_COLOR = (244, 244, 244)
@@ -45,11 +46,11 @@ def _to_hash_hex_list(code):
 
     return hash.hexdigest()
 
-def _extract_color(hex_list):
-    r,g,b =tuple(hex_list[i:i+2] 
-            for i in range(0, 2*3, 2))
+def _extract_color(hex_list, saturation=0.7, lightness=0.5):
+    hue = (int(hex_list[-7:], 16) / 0xfffffff)
 
-    return '#{r}{g}{b}'.format(r=r,g=g,b=b)
+    r,g,b = (int(round(v*255)) for v in colorsys.hls_to_rgb(hue, lightness, saturation))
+    return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
 def _build_grid(hex_list, number_of_blocks):
     # Tailing hex_list to rear 15 bytes
