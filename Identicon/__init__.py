@@ -14,10 +14,10 @@ DEFAULT_IMAGE_TYPE = 'PNG'
 DEFAULT_LIGHTNESS = 0.5
 DEFAULT_SATURATION = 0.7
 
-def render(input_str, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, lightness=DEFAULT_LIGHTNESS, saturation=DEFAULT_SATURATION, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
+def render(input_str, input_hash_str=None, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, lightness=DEFAULT_LIGHTNESS, saturation=DEFAULT_SATURATION, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
 
     # Generate colors
-    hex_str = _to_hash_hex_str(input_str)
+    hex_str = input_hash_str if input_hash_str else _to_hash_hex_str(input_str)
     generated_color = _extract_color(hex_str, lightness, saturation)
     background_color = generated_color if background_color is None else background_color
     foreground_color = generated_color if foreground_color is None else foreground_color
