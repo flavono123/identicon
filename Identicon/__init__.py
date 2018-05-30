@@ -51,7 +51,7 @@ def _to_hash_hex_list(code):
 def _extract_color(hex_list, lightness, saturation):
     hue = (int(hex_list[-7:], 16) / 0xfffffff)
 
-    r,g,b = (int(round(v*255)) for v in colorsys.hls_to_rgb(hue, lightness, saturation))
+    r,g,b = (int(v*255) for v in colorsys.hls_to_rgb(hue, lightness, saturation))
     return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
 def _build_grid(hex_list, number_of_blocks):
