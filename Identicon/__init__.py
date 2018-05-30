@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-__version__='0.1.1'
+__version__='0.2.0'
 
 import io
 import hashlib
@@ -49,14 +49,14 @@ def _extract_color(hex_list):
     r,g,b =tuple(hex_list[i:i+2] 
             for i in range(0, 2*3, 2))
 
-    return f'#{r}{g}{b}'
+    return '#{r}{g}{b}'.format(r=r,g=g,b=b)
 
 def _build_grid(hex_list, number_of_blocks):
     # Tailing hex_list to rear 15 bytes
     hex_list_tail = hex_list[2:]
     
     # Make 3x5 gird, half of the symmetric grid(left side)
-    half_number_of_blocks = math.ceil(number_of_blocks/2)
+    half_number_of_blocks = int(math.ceil(number_of_blocks/2.0))
     hex_half_grid = [[hex_list_tail[col:col+2] for col in range(row, row+2*half_number_of_blocks, 2)]
             for row in range(0, 2*half_number_of_blocks*number_of_blocks, 2*half_number_of_blocks)]
 
