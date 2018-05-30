@@ -14,11 +14,11 @@ DEFAULT_IMAGE_TYPE = 'PNG'
 DEFAULT_LIGHTNESS = 0.5
 DEFAULT_SATURATION = 0.7
 
-def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, lightness=DEFAULT_LIGHTNESS, saturation=DEFAULT_SATURATION, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
+def render(input_str, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, lightness=DEFAULT_LIGHTNESS, saturation=DEFAULT_SATURATION, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
 
     # Generate colors
-    hex_list = _to_hash_hex_list(code)
-    generated_color = _extract_color(hex_list, lightness, saturation)
+    hex_str = _to_hash_hex_str(input_str)
+    generated_color = _extract_color(hex_str, lightness, saturation)
     background_color = generated_color if background_color is None else background_color
     foreground_color = generated_color if foreground_color is None else foreground_color
 
@@ -26,7 +26,7 @@ def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DE
     number_of_blocks = 5 # varying the number of blocks is currently unsupported
     block_size = (size-2*padding)/number_of_blocks
 
-    grid = _build_grid(hex_list, number_of_blocks)
+    grid = _build_grid(hex_str, number_of_blocks)
     flatten_grid = _flat_to_list(grid)
     pixels = _set_pixels(flatten_grid, number_of_blocks, block_size, padding)
     identicon_im = _draw_identicon(background_color, foreground_color, size, flatten_grid, pixels)
@@ -42,9 +42,9 @@ def render(code, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DE
 
     return identicon_byte_arr
 
-def _to_hash_hex_list(code):
+def _to_hash_hex_str(input_str):
     # TODO: Choose hash scheme
-    hash = hashlib.md5(code.encode('utf8'))
+    hash = hashlib.md5(input_str.encode('utf8'))
 
     return hash.hexdigest()
 
