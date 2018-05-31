@@ -16,12 +16,12 @@ class IdenticonTestCase(unittest.TestCase):
         return ''.join(random.choices(string.printable, k=n))
 
     # Tests
-    def test_to_hash_hex_list_return_32bytes(self):
-        self.assertEqual(len(Identicon._to_hash_hex_list('some_code')), 32)
-        self.assertEqual(len(Identicon._to_hash_hex_list('other_code')), 32)
+    def test_to_hash_hex_str_return_32bytes(self):
+        self.assertEqual(len(Identicon._to_hash_hex_str('some_code')), 32)
+        self.assertEqual(len(Identicon._to_hash_hex_str('other_code')), 32)
 
     def test_extract_color_return_hex_rgb_string(self):
-        hex_list = Identicon._to_hash_hex_list('test_extract_color')
+        hex_list = Identicon._to_hash_hex_str('test_extract_color')
 
         self.assertRegex(Identicon._extract_color(hex_list, 0.5, 0.7), r'^#[0-9a-fA-F]{6}$')
 
