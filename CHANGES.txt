@@ -1,3 +1,17 @@
+0.2.0
+-----
+- Added parameter for input_hash_str (Allows the hash to be calculated via other means other than the default MD5)
+- Added parameter for image size
+- Added parameter for padding
+- Added parameter for background color
+- Added parameter for foreground color
+- Added parameter for corner radius
+- Added parameter for image type
+- Color is now chosen using HLS (The Hue is varied, while lightness and saturation remains constant)
+- Added parameter for lightness
+- Added parameter for saturation
+- Allowed dyanmic background color and static foreground color
+
 0.1.1
 -----
 

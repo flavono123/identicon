@@ -1,63 +1,69 @@
 # -*- coding:utf-8 -*-
-__version__='0.1.1'
 
 import io
+import math
 import hashlib
+import colorsys
 from PIL import Image, ImageDraw
 
-BACKGROUND_COLOR = (244, 244, 244)
+DEFAULT_BACKGROUND_COLOR = (244, 244, 244)
+DEFAULT_PADDING = 20
+DEFAULT_SIZE = 290
+DEFAULT_IMAGE_TYPE = 'PNG'
+DEFAULT_LIGHTNESS = 0.5
+DEFAULT_SATURATION = 0.7
 
-def render(code):
-    hex_list = _to_hash_hex_list(code)
-    color = _extract_color(hex_list)
-    grid = _build_grid(hex_list)
+def render(input_str, input_hash_str=None, size=DEFAULT_SIZE, padding=DEFAULT_PADDING, background_color=DEFAULT_BACKGROUND_COLOR, foreground_color=None, lightness=DEFAULT_LIGHTNESS, saturation=DEFAULT_SATURATION, corner_radius=None, image_type=DEFAULT_IMAGE_TYPE):
+
+    # Generate colors
+    hex_str = input_hash_str if input_hash_str else _to_hash_hex_str(input_str)
+    generated_color = _extract_color(hex_str, lightness, saturation)
+    background_color = generated_color if background_color is None else background_color
+    foreground_color = generated_color if foreground_color is None else foreground_color
+
+    # Generate blocks
+    number_of_blocks = 5 # varying the number of blocks is currently unsupported
+    block_size = (size-2*padding)/number_of_blocks
+
+    grid = _build_grid(hex_str, number_of_blocks)
     flatten_grid = _flat_to_list(grid)
-    pixels = _set_pixels(flatten_grid)
-    identicon_im = _draw_identicon(color, flatten_grid, pixels)
+    pixels = _set_pixels(flatten_grid, number_of_blocks, block_size, padding)
+    identicon_im = _draw_identicon(background_color, foreground_color, size, flatten_grid, pixels)
 
+    # Add radius crop
+    if corner_radius is not None:
+        identicon_im = _crop_coner_round(identicon_im, corner_radius)
+
+    # Generate byte array
     identicon_byte_arr = io.BytesIO()
-    identicon_im.save(identicon_byte_arr, format='PNG')
+    identicon_im.save(identicon_byte_arr, format=image_type)
     identicon_byte_arr = identicon_byte_arr.getvalue()
 
     return identicon_byte_arr
 
-def _to_hash_hex_list(code):
+def _to_hash_hex_str(input_str):
     # TODO: Choose hash scheme
-    hash = hashlib.md5(code.encode('utf8'))
+    hash = hashlib.md5(input_str.encode('utf8'))
 
     return hash.hexdigest()
 
-def _extract_color(hex_list):
-    r,g,b =tuple(hex_list[i:i+2] 
-            for i in range(0, 2*3, 2))
+def _extract_color(hex_str, lightness, saturation):
+    hue = (int(hex_str[-7:], 16) / float(0xfffffff))
 
-    return f'#{r}{g}{b}'
+    r,g,b = (int(v*255) for v in colorsys.hls_to_rgb(hue, lightness, saturation))
+    return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
-def _set_pixels(flatten_grid):
-    # len(list) should be a squared of integer value
-    # Caculate pixels
-    pixels = []
-    for i, val in enumerate(flatten_grid):
-        x = int(i%5 * 50) + 20
-        y = int(i//5 * 50) + 20
-        
-        top_left = (x, y)
-        bottom_right = (x + 50, y + 50)
-        
-        pixels.append([top_left, bottom_right])
-
-    return pixels
-
-def _build_grid(hex_list):
-    # Tailing hex_list to rear 15 bytes
-    hex_list_tail = hex_list[2:]
+def _build_grid(hex_str, number_of_blocks):
+    # Tailing hex_str to rear 15 bytes
+    hex_str_tail = hex_str[2:]
     
     # Make 3x5 gird, half of the symmetric grid(left side)
-    hex_half_grid = [[hex_list_tail[col:col+2] for col in range(row, row+2*3, 2)] 
-            for row in range(0, 2*3*5, 2*3)]
+    half_number_of_blocks = int(math.ceil(number_of_blocks/2.0))
+    hex_half_grid = [[hex_str_tail[col:col+2] for col in range(row, row+2*half_number_of_blocks, 2)]
+            for row in range(0, 2*half_number_of_blocks*number_of_blocks, 2*half_number_of_blocks)]
 
     hex_grid = _mirror_row(hex_half_grid)
-    
+
     int_grid = [list(map(lambda e: int(e ,base=16), row)) for row in hex_grid]
 
     # TODO: Using more entropies, should be deprecated
@@ -77,14 +83,27 @@ def _flat_to_list(nested_list):
 
     return flatten_list
 
-def _draw_identicon(color, grid_list, pixels):
-    identicon_im = Image.new('RGB', (50*5+20*2, 50*5+20*2), BACKGROUND_COLOR)
+def _set_pixels(flatten_grid, number_of_blocks, block_size, padding):
+    # len(list) should be a squared of integer value
+    # Caculate pixels
+    pixels = []
+    for i, val in enumerate(flatten_grid):
+        x = int(i%number_of_blocks * block_size) + padding
+        y = int(i//number_of_blocks * block_size) + padding
+
+        top_left = (x, y)
+        bottom_right = (x + block_size, y + block_size)
+
+        pixels.append([top_left, bottom_right])
+
+    return pixels
+
+def _draw_identicon(background, foreground, size, grid_list, pixels):
+    identicon_im = Image.new('RGB', (size, size), background)
     draw = ImageDraw.Draw(identicon_im)
     for grid, pixel in zip(grid_list, pixels):
         if grid != 0: # for not zero
-            draw.rectangle(pixel, fill=color)
-
-    identicon_im = _crop_coner_round(identicon_im, 50)
+            draw.rectangle(pixel, fill=foreground)
 
     return identicon_im
 

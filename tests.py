@@ -16,20 +16,20 @@ class IdenticonTestCase(unittest.TestCase):
         return ''.join(random.choices(string.printable, k=n))
 
     # Tests
-    def test_to_hash_hex_list_return_32bytes(self):
-        self.assertEqual(len(Identicon._to_hash_hex_list('some_code')), 32)
-        self.assertEqual(len(Identicon._to_hash_hex_list('other_code')), 32)
+    def test_to_hash_hex_str_return_32bytes(self):
+        self.assertEqual(len(Identicon._to_hash_hex_str('some_code')), 32)
+        self.assertEqual(len(Identicon._to_hash_hex_str('other_code')), 32)
 
     def test_extract_color_return_hex_rgb_string(self):
-        hex_list = Identicon._to_hash_hex_list('test_extract_color')
+        hex_list = Identicon._to_hash_hex_str('test_extract_color')
 
-        self.assertRegex(Identicon._extract_color(hex_list), r'^#[0-9a-fA-F]{6}$')
+        self.assertRegex(Identicon._extract_color(hex_list, 0.5, 0.7), r'^#[0-9a-fA-F]{6}$')
 
     def test_build_grid_return_5x5_list(self):
         #dummy_hex_list = str(0x0123456789abcdef) 
         dummy_hex_list = hashlib.md5('dummy'.encode('utf8')).hexdigest()
         
-        grid = Identicon._build_grid(dummy_hex_list)
+        grid = Identicon._build_grid(dummy_hex_list, 5)
 
         self.assertEqual(len(grid), 5)
         for i in range(5):
@@ -64,7 +64,7 @@ class IdenticonTestCase(unittest.TestCase):
        rgb_image = image.convert('RGB')
        background_color = rgb_image.getpixel((19,19))
 
-       self.assertEqual(Identicon.BACKGROUND_COLOR, background_color)
+       self.assertEqual(Identicon.DEFAULT_BACKGROUND_COLOR, background_color)
 
 
 
