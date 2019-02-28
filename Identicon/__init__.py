@@ -3,7 +3,11 @@ __version__='0.1.1'
 
 import io
 import hashlib
-from PIL import Image, ImageDraw
+try:
+    from Pillow import Image, ImageDraw
+except:
+    from PIL import Image, ImageDraw
+
 
 BACKGROUND_COLOR = (244, 244, 244)
 

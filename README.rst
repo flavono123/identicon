@@ -36,11 +36,11 @@ You can write to file:
     with open('identicon.png', 'wb') as f:
         f.write(identicon)
 
-or get as :code:`PIL.Image`:
+or get as :code:`Pillow.Image`:
 
 ::
 
     import io
-    from PIL import Image
+    from Pillow import Image
 
     image = Image.open(io.BytesIO(identicon))

@@ -4,7 +4,10 @@ import string
 import random
 import io
 
-from PIL import Image
+try:
+    from Pillow import Image
+except:
+    from PIL import Image
 
 import Identicon
 
