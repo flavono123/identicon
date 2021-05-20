@@ -1,8 +1,6 @@
 from setuptools import setup, find_packages
 from os.path import isfile
 
-import Identicon
-
 def read(*names):
     values = dict()
     extensions = ['.txt', '.rst']
@@ -25,7 +23,7 @@ long_description = '''
 
 setup(
     name='Identicon',
-    version=Identicon.__version__,
+    version='0.1',
     description='A Python library for generating Github-like identicons',
     long_description=long_description,
     keywords='identicon image profile render github',
